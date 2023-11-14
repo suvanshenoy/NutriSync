@@ -1,25 +1,25 @@
 {
-	"project":{
-		"project-title" : "",
-		"project-topic" : "Healthcare website like healthifyme"
+	"project": {
+		"name": "NutriSync",
+		"description": ""
 	},
-
-	"programming-language":{
-		"programming-language-type":{
-			"frontend" :{
-				"frontend-framework" :{
-					"frontend-framework-type" : "javascript",
-					"frontend-framework-name" : "vue"
+	"language": {
+		"type": {
+			"frontend": {
+				"framework": {
+					"type": "javascript",
+					"name": "vue"
 				},
-				"frontend-style" : "tailwind css",
-				"frontend-router" : ["vite"]
+				"style": "tailwind-css",
+				"router": ""
 			},
-			"backend"  :""
+			"backend": ""
 		}
 	},
-	"package-manager":[
-		["npm","bun"]
+	"package-manager": [
+		[
+			"npm",
+			"bun"
+		]
 	]
-
-
 }
