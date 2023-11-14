@@ -1,0 +1,25 @@
+{
+	"project":{
+		"project-title" : "",
+		"project-topic" : "Healthcare website like healthifyme"
+	},
+
+	"programming-language":{
+		"programming-language-type":{
+			"frontend" :{
+				"frontend-framework" :{
+					"frontend-framework-type" : "javascript",
+					"frontend-framework-name" : "vue"
+				},
+				"frontend-style" : "tailwind css",
+				"frontend-router" : ["vite"]
+			},
+			"backend"  :""
+		}
+	},
+	"package-manager":[
+		["npm","bun"]
+	]
+
+
+}
