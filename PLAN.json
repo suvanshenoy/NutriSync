@@ -1,25 +1,20 @@
 {
-	"project": {
-		"name": "NutriSync",
-		"description": ""
-	},
-	"language": {
-		"type": {
-			"frontend": {
-				"framework": {
-					"type": "javascript",
-					"name": "vue"
-				},
-				"style": "tailwind-css",
-				"router": ""
-			},
-			"backend": ""
-		}
-	},
-	"package-manager": [
-		[
-			"npm",
-			"bun"
-		]
-	]
+  "project": {
+    "name": "NutriSync",
+    "description": ""
+  },
+  "language": {
+    "type": {
+      "frontend": {
+        "framework": {
+          "type": "javascript",
+          "name": "vue"
+        },
+        "style": "tailwind-css",
+        "router": ""
+      },
+      "backend": ""
+    }
+  },
+  "package-manager": [["npm", "bun"]]
 }
