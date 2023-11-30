@@ -2,7 +2,7 @@
  NutriSync is an health-care website. 
 
 
-# Languages and framworks used :
+# Languages and frameworks used :
 
    * Html,Css,Js
    * Vue.js
