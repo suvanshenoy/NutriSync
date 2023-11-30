@@ -1,3 +1,54 @@
+
+<script>
+import axios from 'axios';
+export default {
+ data() {
+    return {
+      formData: {
+        first_name: '',
+        last_name: '',
+        age: 0,
+        dob: '',
+        gender: '',
+        email: '',
+        password : '',
+      },
+      message: '',
+      show : false,
+    };
+  },
+  methods: {
+  signUp() {
+      axios
+        .post('http://localhost:3000/api/sign-up', {
+          first_name: this.firstName,
+          last_name: this.lastName,
+          age: this.age,
+          dob: this.dob,
+          gender: this.gender,
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          this.message = response.data.message;
+        })
+        .catch((error) => {
+          console.error('Error signing up:', error.message);
+          // Handle errors
+          if (error.response) {
+            this.message = `Error: ${error.response.data.message}`;
+          } else if (error.request) {
+            this.message = 'Error: No response received from the server.';
+          } else {
+            this.message = `Error: ${error.message}`;
+          }
+        });
+    },
+  },
+};
+</script>
+
+
 <template>
   <div class="bg-gray-900 min-h-screen flex flex-col justify-center py-12 bg-gradient-to-r from-red-600 via-red-500 to-red-400 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -7,9 +58,12 @@
     </div>
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form @submit.prevent="submitForm" class="space-y-6">
+        <form @submit.prevent="signUp" class="space-y-6">
           <div>
-            <label for="first_name" class="block text-sm font-medium text-gray-300">
+            <label 
+              for="first_name" 
+              class="block text-sm font-medium text-gray-300"
+            >
               First Name
             </label>
             <div class="mt-1">
@@ -51,7 +105,35 @@
                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-700 text-gray-100"
               />
             </div>
+        </div>
+        <div>
+          <label 
+            for="password" class="block text-sm font-medium text-gray-300">                Password:
+          </label>
+          <div class="relative mt-1">
+          <input 
+              v-model.trim="password" 
+              id="password"
+              :type="show ? 'text' : 'password'"
+              autocompletete="current-password"
+              required
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-700 text-gray-100"
+                />
+
+          <div
+            class="flex absolute inset-y-0 right-0 items-center pr-3 text-sm leading-5">
+            <button
+             @click="show = !show"
+             type="button"
+            :class="{'text-indigo-600':show,'text-gray-400':!show}"
+            class = "focus:text-indigo-500 focus:outline-none"
+            >
+            <span v-if="!show">Show</span>
+            <span v-else>Hide</span>
+            </button>
           </div>
+        </div>
+      </div>
 
           <div>
             <label for="dob" class="block text-sm font-medium text-gray-300">
@@ -93,7 +175,7 @@
           </div>
           <div>
             <button
-              type="submit"
+              type = "submit"
               class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Sign Up
@@ -106,33 +188,14 @@
             <div align="center" class="g-recaptcha" data-sitekey="6LcEiOooAAAAAHPqCjda1gr7oVgGH5kX0IgNPGr_"></div>
             <div class="text-sm">
 
-							<router-link to="/signin" class="font-medium text-white hover:white align-baseline">
+							<router-link to="/sign-in" class="font-medium text-white hover:white align-baseline">
 								Already have an account?
 							</router-link>
 						</div>
           </div>
         </form>
+        <div v-if="message" class=" text-green-500 p-2 mx-20 text-xl">{{message}}</div>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      firstName: '',
-      lastName: '',
-      email: '',
-      dob: '',
-      age: null,
-      gender: 'male', // Default value for gender
-    };
-  },
-  methods: {
-    submitForm() {
-      // Implement your form submission logic here
-    },
-  },
-};
-</script>

@@ -2,6 +2,9 @@
 import GoogleLogin from "./GoogleLogin.vue";
 import FacebookLogin from "./FacebookLogin.vue";
 import InstagramLogin from "./InstagramLogin.vue";
+
+import axios from 'axios'; 
+
 export default {
   components: {
     GoogleLogin,
@@ -12,15 +15,34 @@ export default {
     return {
       email: "",
       password: "",
+      message : "",
       show: false,
     };
   },
   methods: {
-    login() {
-      console.warn(this.email, this.password);
+  async signIn(){
+   axios
+        .post('http://localhost:3000/api/sign-in', {
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          this.message = response.data.message;
+        })
+        .catch((error) => {
+          console.error('Error signing in:', error.message);
+          // Handle errors
+          if (error.response) {
+            this.message = `Error: ${error.response.data.message}`;
+          } else if (error.request) {
+            this.message = 'Error: No response received from the server.';
+          } else {
+            this.message = `Error: ${error.message}`;
+          }
+        });
+      },
     },
-  },
-};
+  };
 </script>
 
 <template>
@@ -34,11 +56,12 @@ export default {
     </div>
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="py-8 px-4 bg-gray-800 shadow sm:px-10 sm:rounded-lg">
+
+          <!-- action="http://localhost:3000/api/v1/index"-->
+          <!-- method="POST" -->
         <form
-          action="http://localhost:3000/api/v1/index"
-          method="POST"
-          class="space-y-6"
-        >
+          @submit.prevent="signIn"
+          class="space-y-6">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-300">
               Email address
@@ -98,17 +121,16 @@ export default {
             </div>
             <div class="text-sm">
               <router-link
-                to="/signup"
+                to="/sign-up"
                 class="font-medium text-white hover:white"
               >
-                Doesn't have an account?
+                Don't have an account?
               </router-link>
             </div>
           </div>
           <div>
             <button
-              v-on:click="login"
-              type="submit"
+              type = "submit"
               class="flex relative justify-center py-2 px-4 w-full text-sm font-medium text-white bg-red-600 rounded-md border border-transparent hover:bg-red-400 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none group"
             >
               Sign in
@@ -138,7 +160,9 @@ export default {
           <FacebookLogin />
           <InstagramLogin />
         </div>
+        <div v-if="message" class="text-green-500 p-1 mt-4 mx-20 text-2xl capitalize">{{message}}</div>
       </div>
+
     </div>
   </div>
 </template>

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "start": "npm run build && npm run dev ",
-    "flask": "python3 -m flask --app ./server/py/app.py run --debug",
+    "flask": "python3 -m flask --app ./server/py/server.py run --debug",
+    "express": "bun run ./server/js/server.cjs",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist"
   },

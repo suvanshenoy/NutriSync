@@ -1,20 +1,20 @@
 import { createApp } from "vue";
-import App1 from "./App1.vue";
+import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import Routes from "./routes";
+import Routes from "./router/routes";
 
-const app1 = createApp(App1);
+const app = createApp(App);
 const router = createRouter({
   history: createWebHistory(),
   routes: Routes,
 });
-app1.use(router);
+app.use(router);
 
-app1.mount("#app1");
+app.mount("#app");
 
 const request = require("request");
 
-app1.post("/api/v1/index", (req, res) => {
+app.post("/sign-in/auth", (req, res) => {
   const recaptchaResponse = req.body["g-recaptcha-response"];
   const secretKey = "6LcEiOooAAAAAEiFfdK2u69RgvX7Y7OJJSHjv4j3";
 

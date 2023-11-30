@@ -8,4 +8,4 @@
 #BUN_LOCK_B='bun.lockb'
 #PACKAGE_LOCK_JSON='package-lock.json'
 
-npm run build && npm run dev
+#npm run build && npm run dev

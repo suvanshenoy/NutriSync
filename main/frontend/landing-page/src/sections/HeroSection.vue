@@ -7,8 +7,8 @@ export default {
   },
   data() {
     return {
-      primaryLink: "http://localhost:5001/signup",
-      mutedLink: "http://localhost:5001/signin",
+      primaryLink: "http://localhost:5001/sign-up",
+      mutedLink: "http://localhost:5001/sign-in",
     };
   },
 };
