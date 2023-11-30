@@ -1,5 +1,5 @@
-# NUTRISYNC:
- This an health-care website 
+# NutriSync:
+ NutriSync is an health-care website. 
 
 
 # LANGUAGES AND FRAMEWORKS USED :
