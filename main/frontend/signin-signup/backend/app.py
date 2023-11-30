@@ -50,7 +50,6 @@ get_files = get_files.GetFiles()
 db = SQLAlchemy(app)
 
 
-PORT = int(input(f"{Fore.CYAN}enter the port number\n=> "))
 
 
 
