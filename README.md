@@ -1,5 +1,5 @@
 # NUTRISYNC:
-   This An health-care website 
+ This an health-care website 
 
 
 # LANGUAGES AND FRAMEWORKS USED :
