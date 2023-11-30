@@ -2,7 +2,7 @@
  NutriSync is an health-care website. 
 
 
-# LANGUAGES AND FRAMEWORKS USED :
+# Languages and framworks used :
 
    * Html,Css,Js
    * Vue.js
@@ -12,7 +12,7 @@
    * Flask
 
 
-# PACKAGE MANAGERS USED:
+# Package managers used:
  
   * Npm
   * Bun
