@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <title>Nutrisync - FAQ</title>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+  <header class="bg-red-500 text-white py-4">
+    <div class="container mx-auto">
+      <h1 class="text-3xl font-semibold">Nutrisync</h1>
+    </div>
+  </header>
+
+  <section class="container mx-auto mt-8">
+    <h2 class="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
+
+    <div class="accordion">
+      <!-- FAQ Item 1 -->
+      <div class="accordion-item border-b border-gray-300">
+        <input type="checkbox" id="faq1" class="hidden">
+        <label for="faq1" class="flex items-center justify-between cursor-pointer py-2">
+          <span class="text-lg">What is Nutrisync?</span>
+          <span class="text-blue-500">+</span>
+        </label>
+        <div class="accordion-content px-4">
+          <p>Nutrisync is a health platform that provides personalized nutrition and wellness guidance based on
+            individual needs and goals.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 2 -->
+      <div class="accordion-item border-b border-gray-300">
+        <input type="checkbox" id="faq2" class="hidden">
+        <label for="faq2" class="flex items-center justify-between cursor-pointer py-2">
+          <span class="text-lg">How does Nutrisync work?</span>
+          <span class="text-blue-500">+</span>
+        </label>
+        <div class="accordion-content px-4">
+          <p>Nutrisync uses advanced algorithms and data analysis to create personalized nutrition plans, taking into
+            account factors such as dietary preferences, health conditions, and fitness goals.</p>
+        </div>
+      </div>
+
+      <!-- Add more FAQ items as needed -->
+
+    </div>
+  </section>
+
+  <script>
+    // Add JavaScript for handling accordion behavior if needed
+    document.addEventListener('DOMContentLoaded', function () {
+      const accordions = document.querySelectorAll('.accordion-item');
+
+      accordions.forEach((accordion) => {
+        accordion.addEventListener('change', function () {
+          accordions.forEach((otherAccordion) => {
+            if (otherAccordion !== accordion) {
+              otherAccordion.querySelector('input').checked = false;
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>

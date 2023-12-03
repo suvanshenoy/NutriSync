@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriSync Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="font-sans bg-gray-100">
+
+  <!-- Navigation -->
+  <header class="bg-red-500 p-4 text-white flex justify-between items-center">
+    <h1 class="text-3xl font-semibold">NutriSync Dashboard</h1>
+    <button onclick="logout()"
+      class="bg-red-400 font-bold text-white px-4 py-2 rounded hover:bg-red-300">Logout</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto mt-8">
+
+    <!-- Summary Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- User Cards -->
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">Total Users</h2>
+        <p class="text-3xl font-bold text-blue-600">{{user_count}}</p>
+      </article>
+      <!-- New Sign-ups Card -->
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">New Sign-ups</h2>
+        <p class="text-3xl font-bold text-yellow-600">{{new_signups_count}}</p>
+      </article>
+      <!-- Health Tips Card -->
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">Health Tips</h2>
+        <ul class="list-disc ml-6">
+          <li>Eat a balanced diet with fruits and vegetables.</li>
+          <li>Stay hydrated by drinking plenty of water.</li>
+          <li>Get regular exercise for at least 30 minutes a day.</li>
+        </ul>
+      </article>
+      <!-- User Questions Form -->
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">Ask a Health Question</h2>
+        <form action="#" method="post" class="space-y-4">
+          <div>
+            <label for="userName" class="block text-sm font-medium text-gray-600">Name:</label>
+            <input type="text" id="userName" name="userName" class="border p-2 w-full" required>
+          </div>
+          <div>
+            <label for="userQuestion" class="block text-sm font-medium text-gray-600">Question:</label>
+            <textarea id="userQuestion" name="userQuestion" rows="3" class="border p-2 w-full" required></textarea>
+          </div>
+          <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Submit Question</button>
+        </form>
+      </article>
+    </section>
+
+    <!-- Add/Remove Meal Button -->
+    <section class="mt-12">
+      <h2 class="text-3xl font-semibold mb-4 text-gray-800">🍔 Meal Log</h2>
+      <div class="flex items-center">
+        <input type="text" id="mealInput"
+          class="border p-4 flex-grow mr-4 focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="Enter your meal...">
+        <button onclick="addMeal()" class="bg-blue-500 text-white px-6 py-4 rounded">Add Meal</button>
+      </div>
+      <!-- Meal Log Container -->
+      <div id="mealLog" class="mt-8 space-y-4">
+        <!-- Meal log entries will be added here -->
+      </div>
+    </section>
+
+    <!-- Calorie Tracker -->
+    <section class="mt-12">
+      <h2 class="text-3xl font-semibold mb-4 text-gray-800">🔥 Calorie Tracker</h2>
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <label for="calorieInput" class="block text-sm font-medium text-gray-600">Today's Calories:</label>
+        <input type="number" id="calorieInput" class="border p-2 w-full" placeholder="Enter calories consumed today...">
+        <button onclick="trackCalories()" class="mt-4 bg-green-500 text-white px-4 py-2 rounded">Track Calories</button>
+        <p id="calorieCount" class="mt-4 text-lg font-semibold text-blue-600">Total Calories: 0</p>
+      </article>
+    </section>
+
+    <!-- Sleep Log -->
+    <section class="mt-12">
+      <h2 class="text-3xl font-semibold mb-4 text-gray-800">😴 Sleep Log</h2>
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <label for="sleepInput" class="block text-sm font-medium text-gray-600">Hours of Sleep:</label>
+        <input type="number" id="sleepInput" class="border p-2 w-full" placeholder="Enter hours of sleep...">
+        <button onclick="logSleep()" class="mt-4 bg-purple-500 text-white px-4 py-2 rounded">Log Sleep</button>
+        <p id="sleepLog" class="mt-4 text-lg font-semibold text-purple-600">Last night's sleep: 0 hours</p>
+      </article>
+    </section>
+
+    <!-- Upcoming Health Events -->
+    <section class="mt-12">
+      <h2 class="text-3xl font-semibold mb-4 text-gray-800">📅 Upcoming Health Events</h2>
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <ul class="list-disc ml-6">
+          <li>Yoga in the Park - Tomorrow at 8 AM</li>
+          <li>Nutrition Workshop - Next Week on Wednesday</li>
+          <li>5K Charity Run - Next Month</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="mt-12">
+      <h2 class="text-3xl font-semibold mb-4 text-gray-800">📈 User Growth Chart</h2>
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <canvas id="userGrowthChart" width="400" height="200"></canvas>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-300 p-4 mt-12">
+    <p class="text-center text-gray-600">&copy; 2023 HealthSync. All rights reserved.</p>
+  </footer>
+
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script>
+    const mealInput = document.getElementById('mealInput');
+    const mealLogContainer = document.getElementById('mealLog');
+    const calorieInput = document.getElementById('calorieInput');
+    const calorieCount = document.getElementById('calorieCount');
+    const sleepInput = document.getElementById('sleepInput');
+    const sleepLog = document.getElementById('sleepLog');
+
+    // Sample meal data with calorie information
+    const mealData = {
+      'Chicken Salad': 350,
+      'Vegetarian Pizza': 500,
+      'Salmon with Quinoa': 600,
+      'Fruit Smoothie': 200,
+    };
+
+    function addMeal() {
+      const mealName = mealInput.value.trim();
+      if (mealName !== '' && mealData[mealName] !== undefined) {
+        const mealEntry = document.createElement('div');
+        mealEntry.textContent = `${mealName} (${mealData[mealName]} calories)`;
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove Meal';
+        removeButton.className = 'bg-red-500 text-white px-4 py-2 rounded ml-4';
+        removeButton.onclick = function () {
+          mealEntry.remove();
+        };
+
+        mealEntry.appendChild(removeButton);
+        mealEntry.className = 'flex items-center justify-between bg-white p-4 rounded-lg shadow-md';
+        mealLogContainer.appendChild(mealEntry);
+
+        mealInput.value = '';
+      } else {
+        alert('Meal not found or calories not available.');
+      }
+    }
+
+    function trackCalories() {
+      const calories = parseInt(calorieInput.value) || 0;
+      const currentTotal = parseInt(calorieCount.textContent.split(': ')[1]) || 0;
+      const newTotal = currentTotal + calories;
+      calorieCount.textContent = `Total Calories: ${newTotal}`;
+      calorieInput.value = '';
+    }
+
+    function logSleep() {
+      const hoursOfSleep = parseInt(sleepInput.value) || 0;
+      sleepLog.textContent = `Last night's sleep: ${hoursOfSleep} hours`;
+      sleepInput.value = '';
+    }
+    function logout() {
+      console.log("logout button was clicked!!")
+      window.location.href = 'http://localhost:5000/nutriSync-landing-page/';
+    }
+    const chartData = {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'User Growth',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        data: [10, 15, 25, 30, 28, 35],
+      }],
+    };
+
+    const ctx = document.getElementById('userGrowthChart').getContext('2d');
+
+    const userGrowthChart = new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+      options: {
+        scales: {
+          x: {
+            grid: {
+              display: false,
+            },
+          },
+          y: {
+            grid: {
+              color: '#e0e0e0',
+            },
+          },
+        },
+      },
+    });
+  </script>
+
+</body>
+
+</html>
