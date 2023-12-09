@@ -13,12 +13,15 @@
   <!-- Navigation -->
   <header class="bg-red-500 p-4 text-white flex justify-between items-center">
     <h1 class="text-3xl font-semibold">NutriSync Dashboard</h1>
-    <button onclick="logout()"
-      class="bg-red-400 font-bold text-white px-4 py-2 rounded hover:bg-red-300">Logout</button>
+    <button id="logoutButton" class="bg-red-400 font-bold text-white px-4 py-2 rounded hover:bg-red-300">Logout</button>
   </header>
 
   <!-- Main Content -->
   <main class="container mx-auto mt-8">
+    <h2 id="welcomeMessage" class="text-2xl font-semibold text-black px-4 py-2 pb-10 relative cool-text">
+      <span id="typedText" class="inline-block"></span><span id="cursor" class="absolute animate-blink ml-1">|</span>
+    </h2>
+
 
     <!-- Summary Cards -->
     <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -59,31 +62,43 @@
     </section>
 
     <!-- Add/Remove Meal Button -->
+    <!-- Add/Remove Meal Button -->
     <section class="mt-12">
       <h2 class="text-3xl font-semibold mb-4 text-gray-800">🍔 Meal Log</h2>
       <div class="flex items-center">
-        <input type="text" id="mealInput"
-          class="border p-4 flex-grow mr-4 focus:outline-none focus:ring focus:border-blue-300"
-          placeholder="Enter your meal...">
-        <button onclick="addMeal()" class="bg-blue-500 text-white px-6 py-4 rounded">Add Meal</button>
+        <select id="mealInput" class="border p-4 flex-grow mr-4 focus:outline-none focus:ring focus:border-blue-300">
+          <option value="" selected disabled>Select a meal...</option>
+          <option value="Chicken Salad">Chicken Salad</option>
+          <option value="Vegetarian Pizza">Vegtarian Pizza</option>
+          <option value="Biryani">Biryani</option>
+          <option value="Paneer Butter Masala">Paneer Butter Masala</option>
+          <option value="Dosa">Dosa</option>
+          <option value="Samosa">Samosa</option>
+          <option value="Tandoori Chicken">Tandoori Chicken</option>
+          <option value="Chole Bhature">Chole Bhature</option>
+          <option value="Palak Paneer">Palak Paneer</option>
+          <option value="Butter Chicken">Butter Chicken</option>
+          <option value="Rajma Chawal">Rajma Chawal</option>
+          <option value="Masala Dosa">Masala Dosa</option>
+          <option value="Aloo Paratha">Aloo Paratha</option>
+          <option value="Fish Curry">Fish Curry</option>
+          <option value="Mutton Curry">Mutton Curry</option>
+          <option value="Gulab Jamun">Gulab Jamun</option>
+          <option value="Jalebi">Jalebi</option>
+          <option value="Rasgulla">Rasgulla</option>
+          <option value="Pav Bhaji">Pav Bhaji</option>
+          <option value="Dal Makhani">Dal Makhani</option>
+        </select>
+        <br />
+        <button onclick="trackCalories()" class="ml-3 bg-green-500 text-white px-6 py-4 rounded">Track
+          Calories</button>
       </div>
-      <!-- Meal Log Container -->
+      <div id="calorieMessage" class="mt-4 text-lg font-semibold text-green-600"></div>
+      <div id="totalCalories" class="mt-4 text-lg font-semibold text-blue-600">Total Calories: 0</div>
       <div id="mealLog" class="mt-8 space-y-4">
         <!-- Meal log entries will be added here -->
       </div>
     </section>
-
-    <!-- Calorie Tracker -->
-    <section class="mt-12">
-      <h2 class="text-3xl font-semibold mb-4 text-gray-800">🔥 Calorie Tracker</h2>
-      <article class="bg-white p-6 rounded-lg shadow-md">
-        <label for="calorieInput" class="block text-sm font-medium text-gray-600">Today's Calories:</label>
-        <input type="number" id="calorieInput" class="border p-2 w-full" placeholder="Enter calories consumed today...">
-        <button onclick="trackCalories()" class="mt-4 bg-green-500 text-white px-4 py-2 rounded">Track Calories</button>
-        <p id="calorieCount" class="mt-4 text-lg font-semibold text-blue-600">Total Calories: 0</p>
-      </article>
-    </section>
-
     <!-- Sleep Log -->
     <section class="mt-12">
       <h2 class="text-3xl font-semibold mb-4 text-gray-800">😴 Sleep Log</h2>
@@ -107,19 +122,12 @@
       </article>
     </section>
 
-    <!-- Charts Section -->
-    <section class="mt-12">
-      <h2 class="text-3xl font-semibold mb-4 text-gray-800">📈 User Growth Chart</h2>
-      <article class="bg-white p-6 rounded-lg shadow-md">
-        <canvas id="userGrowthChart" width="400" height="200"></canvas>
-      </article>
-    </section>
 
   </main>
 
   <!-- Footer -->
   <footer class="bg-gray-300 p-4 mt-12">
-    <p class="text-center text-gray-600">&copy; 2023 HealthSync. All rights reserved.</p>
+    <p class="text-center text-gray-600">&copy; 2023 NutriSync. All rights reserved.</p>
   </footer>
 
   <!-- Chart.js Library -->
@@ -135,42 +143,65 @@
     const sleepLog = document.getElementById('sleepLog');
 
     // Sample meal data with calorie information
-    const mealData = {
-      'Chicken Salad': 350,
-      'Vegetarian Pizza': 500,
-      'Salmon with Quinoa': 600,
-      'Fruit Smoothie': 200,
-    };
-
-    function addMeal() {
-      const mealName = mealInput.value.trim();
-      if (mealName !== '' && mealData[mealName] !== undefined) {
-        const mealEntry = document.createElement('div');
-        mealEntry.textContent = `${mealName} (${mealData[mealName]} calories)`;
-
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove Meal';
-        removeButton.className = 'bg-red-500 text-white px-4 py-2 rounded ml-4';
-        removeButton.onclick = function () {
-          mealEntry.remove();
-        };
-
-        mealEntry.appendChild(removeButton);
-        mealEntry.className = 'flex items-center justify-between bg-white p-4 rounded-lg shadow-md';
-        mealLogContainer.appendChild(mealEntry);
-
-        mealInput.value = '';
-      } else {
-        alert('Meal not found or calories not available.');
-      }
-    }
-
+    let totalCalories = 0;
     function trackCalories() {
-      const calories = parseInt(calorieInput.value) || 0;
-      const currentTotal = parseInt(calorieCount.textContent.split(': ')[1]) || 0;
-      const newTotal = currentTotal + calories;
-      calorieCount.textContent = `Total Calories: ${newTotal}`;
-      calorieInput.value = '';
+      const selectedMeal = mealInput.value.trim();
+
+      if (selectedMeal !== '') {
+        // Send a POST request to the Flask backend
+        fetch('/api/add_meal', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_name: '{{ user_name }}',
+            selected_meal: selectedMeal,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.calories !== undefined && !isNaN(data.calories)) {
+              // Update the message below meal log based on the fetched calories
+              const messageElement = document.getElementById('calorieMessage');
+              messageElement.textContent = `Calories for ${selectedMeal}: ${data.calories}`;
+              totalCalories += data.calories;
+              const totalCaloriesElement = document.getElementById('totalCalories');
+              totalCaloriesElement.textContent = `Total Calories: ${totalCalories}`;
+
+
+              // Update the total calories
+              totalCalories += data.calories;
+
+
+              // Add the selected meal to the log
+              const mealEntry = document.createElement('div');
+              mealEntry.textContent = selectedMeal;
+
+              const removeButton = document.createElement('button');
+              removeButton.textContent = 'Remove Meal';
+              removeButton.className = 'bg-red-500 text-white px-4 py-2 rounded ml-4';
+              removeButton.onclick = function () {
+                // Subtract calories when removing a meal
+                totalCalories -= data.calories;
+
+
+                mealEntry.remove();
+              };
+
+              mealEntry.appendChild(removeButton);
+              mealEntry.className = 'flex items-center justify-between bg-white p-4 rounded-lg shadow-md';
+              mealLogContainer.appendChild(mealEntry);
+
+              // Clear the mealInput dropdown
+              mealInput.value = '';
+            }
+          })
+          .catch((error) => console.error('Error adding meal:', error));
+
+      } else {
+        alert('Please select a meal.');
+      }
     }
 
     function logSleep() {
@@ -182,39 +213,123 @@
       console.log("logout button was clicked!!")
       window.location.href = 'http://localhost:5000/nutriSync-landing-page/';
     }
-    const chartData = {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-      datasets: [{
-        label: 'User Growth',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-        data: [10, 15, 25, 30, 28, 35],
-      }],
+
+    //    const chartData = {
+    //      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    //      datasets: [{
+    //        label: 'User Growth',
+    //        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+    //        borderColor: 'rgba(75, 192, 192, 1)',
+    //        borderWidth: 1,
+    //        data: [10, 15, 25, 30, 28, 35],
+    //      }],
+    //    };
+    //
+    //    const ctx = document.getElementById('userGrowthChart').getContext('2d');
+    //
+    //    const userGrowthChart = new Chart(ctx, {
+    //      type: 'line',
+    //      data: chartData,
+    //      options: {
+    //        scales: {
+    //          x: {
+    //            grid: {
+    //              display: false,
+    //            },
+    //          },
+    //          y: {
+    //            grid: {
+    //              color: '#e0e0e0',
+    //            },
+    //          },
+    //        },
+    //      },
+    //    });
+
+    //Typewriter 
+    const welcomeMessage = document.getElementById('typedText');
+    const cursor = document.getElementById('cursor');
+    const welcomeText = " Welcome ,";
+    const fullName = "  {{user_name.capitalize()}}";
+    let index = 0;
+
+    function typeWriter() {
+      if (index < welcomeText.length) {
+        welcomeMessage.textContent += welcomeText.charAt(index);
+      } else if (index - welcomeText.length < fullName.length) {
+        welcomeMessage.textContent += fullName.charAt(index - welcomeText.length);
+      } else {
+        welcomeMessage.textContent = ""; // Reset the message
+        index = 0;
+      }
+
+      index++;
+
+      setTimeout(typeWriter, 100); // Adjust the typing speed (in milliseconds) if needed
+    }
+
+    // Trigger the typewriter effect on page load
+    window.onload = function () {
+      typeWriter();
     };
 
-    const ctx = document.getElementById('userGrowthChart').getContext('2d');
+    // Blinking cursor animation
+    setInterval(() => {
+      cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+    }, 500)
 
-    const userGrowthChart = new Chart(ctx, {
-      type: 'line',
-      data: chartData,
-      options: {
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-          },
-          y: {
-            grid: {
-              color: '#e0e0e0',
-            },
-          },
+
+
+    document.getElementById('logoutButton').addEventListener('click', function () {
+      fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      },
+        body: JSON.stringify({user_name: '{{ user_name }}'}),
+      })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          window.location.href = data.redirect;
+        })
+        .catch(error => console.error('Error during logout:', error));
     });
-  </script>
 
+  </script>
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .cool-text {
+      animation: fadeIn 1s ease-in-out, slideIn 1s ease-in-out;
+      animation-fill-mode: both;
+    }
+
+    .cool-text span {
+      display: inline-block;
+
+    }
+  </style>
 </body>
 
 </html>

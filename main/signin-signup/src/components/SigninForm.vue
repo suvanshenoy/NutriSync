@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center py-12 min-h-screen bg-gradient-to-r from-red-500 to-red-700 p-4 text-white">
+  <div class="flex flex-col justify-center py-12 min-h-screen bg-gradient-to-r from-red-500 to-red-700 p-4 text-white ">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <h2 class="mt-6 text-3xl font-extrabold text-center">Sign In</h2>
     </div>
@@ -100,7 +100,7 @@
   </div>
 </template>
 
-<script>
+ <script>
 import GoogleLogin from "./GoogleLogin.vue";
 import FacebookLogin from "./FacebookLogin.vue";
 import InstagramLogin from "./InstagramLogin.vue";
@@ -131,8 +131,12 @@ export default {
           password: this.password,
 
         })
-        .then((response) => {
-          this.message = response.data.message;
+        .then(res => {
+        if(res.data.redirect){
+           window.location.href = res.data.redirect;
+          }else{
+            this.message = res.data.message;
+          }
         })
         .catch((error) => {
           console.error('Error signing in:', error.message);

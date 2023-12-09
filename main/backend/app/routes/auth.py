@@ -4,8 +4,15 @@ from flask import (Blueprint,jsonify,
 from app import db
 from app.models.user import User
 from app.models.sign_in import SignIn
+from app.models.meal import Meal
+from app.models.calorie import Calorie
 from colorama import Fore,Style
 from datetime import datetime,timedelta
+import json
+import requests
+
+
+
 
 
 auth_bp = Blueprint('auth',__name__)
@@ -47,6 +54,7 @@ def sign_in():
     email = data.get('email','')
     user = User.query.filter_by(email=email).first()
 
+
     
     if user:
         signed_in_user = SignIn(
@@ -56,34 +64,98 @@ def sign_in():
         )
         response={}
         response['message'] = 'Sign-in successful'
+        response['redirect'] = f'http://localhost:3000/NutriSync/dashboard/{signed_in_user.name}'
         db.session.add(signed_in_user)
-        print(f"\n{Fore.GREEN}[status]{Style.RESET_ALL}\t",end="")
-        print(f"{Fore.RED}{response}\n{Style.RESET_ALL}")
+        print(f"\n{Fore.GREEN}[status]{Style.RESET_ALL}\t\n",end="")
+        print(f"{Fore.RED}{json.dumps(response,indent=4)}\n{Style.RESET_ALL}")
         db.session.commit()
-        return jsonify(response),200
+        return jsonify(response)
     else:
         response={}
         response['message'] = 'User not found'
-        print(f"\n{Fore.GREEN}[status]{Style.RESET_ALL}\t",end="")
-        print(f"{Fore.RED}{response}\n{Style.RESET_ALL}")
+        print(f"\n{Fore.GREEN}[status]{Style.RESET_ALL}\t\n",end="")
+        print(f"{Fore.RED}{json.dumps(response,indent=4)}\n{Style.RESET_ALL}")
         return jsonify(response), 401
 
-    
+@auth_bp.route('/api/logout', methods=['POST'])
+def logout():
+    data = request.get_json()
+    user_name = data.get('user_name', '')
 
-@auth_bp.route('/NutriSync/dashboard')
-def dashboard():
-    user_count = User.query.count()
-    # active_users_count = User.query.filter_by(active=True).count()
-    last_week = datetime.utcnow() - timedelta(days=7)
-    new_signups_count = User.query.filter(User.signup_date >= last_week).count()
+    # Remove the user from the SignIn table
+    signed_in_user = SignIn.query.filter_by(name=user_name).first()
+    if signed_in_user:
+        db.session.delete(signed_in_user)
+        db.session.commit()
 
-    return render_template('dashboard.html',
+        response={}
+        response['message'] = 'Logout successful'
+        response['redirect'] = 'http://localhost:5000/NutriSync/landing-page'
+        print(f"\n{Fore.GREEN}[status]{Style.RESET_ALL}\t\n",end="")
+        print(f"{Fore.RED}{json.dumps(response,indent=4)}\n{Style.RESET_ALL}")
+        return jsonify(response)
+    else:
+        response = {'message': 'User not found in the SignIn table'}
+        return jsonify(response), 404
+
+meals_data = [
+  "Chicken Salad"
+  "Vegetarian Pizza",
+  "Biryani",
+  "Paneer Butter Masala",
+  "Dosa",
+  "Samosa",
+  "Tandoori Chicken",
+  "Chole Bhature",
+  "Palak Paneer",
+  "Butter Chicken",
+  "Rajma Chawal",
+  "Masala Dosa",
+  "Aloo Paratha",
+  "Fish Curry",
+  "Mutton Curry",
+  "Gulab Jamun",
+  "Jalebi",
+  "Rasgulla",
+  "Pav Bhaji",
+  "Dal Makhani"
+]
+@auth_bp.route('/NutriSync/dashboard/<name>')
+def dashboard(name):
+    user = SignIn.query.filter_by(name=name).first()
+    if user:
+        user_count = User.query.count()
+        last_week = datetime.utcnow() - timedelta(days=7)
+        new_signups_count = User.query.filter(User.signup_date >= last_week).count()
+        return render_template('dashboard.html',
+                           meals_data = meals_data,
                            user_count=user_count,
-                           # active_users=active_users_count
+                           user_name = user.name,
                            new_signups_count=new_signups_count)
+    else:
+        return render_template('dashboard.html',user_name="guest".capitalize())
+
+@auth_bp.route('/api/add_meal', methods=['POST'])
+def add_meal():
+        data = request.get_json()
+        user_name = data.get('user_name')
+        selected_meal = data.get('selected_meal')
+
+        meal = Meal.query.filter_by(name=selected_meal).first()
+        if meal:
+           calories = meal.calories
+           print(f"\n{Fore.GREEN}[status]{Style.RESET_ALL}\n",end="")
+           print(f"\n{Fore.RED} User {user_name} selected  {selected_meal}{Fore.WHITE}\n")
+           print(f"{Fore.RED} User {user_name} selected {selected_meal} with {calories} calories{Fore.WHITE}\n")
+           return jsonify({'calories': calories}), 200
+        else:
+          return ""
 
 
-@auth_bp.route('/NutriSync/contact')
+
+
+
+auth_bp.route('/NutriSync/contact')
 def contact():
     return render_template('contact.html')
 
@@ -98,3 +170,5 @@ def faq():
 @auth_bp.route('/NutriSync/plan')
 def plan():
     return render_template('plan.html')
+
+

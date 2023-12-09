@@ -172,6 +172,7 @@ export default {
           gender: this.gender,
           email: this.email,
           password: this.password,
+
         })
         .then((response) => {
           this.message = response.data.message;
