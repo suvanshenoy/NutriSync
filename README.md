@@ -8,6 +8,7 @@
 -  Tailwind css
 
 # Installation and Setup:
+
 # Npm:
 To install npm:
 
@@ -19,7 +20,7 @@ To install npm:
      sudo apt-get install node 
 - To install npm you can use:
      sudo apt-get install npm
-- To install both togther use:
+- To install both together use:
      sudo apt-get install node npm
 - Now run:
      sudo apt-get update && sudo apt-get upgrade 
@@ -30,7 +31,7 @@ To install npm:
      sudo apt install curl 
      curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
      source ~/.bashrc 
-- Now run nvm --help or nvm -h to see the options
+- Run nvm --help or nvm -h to see the options
 - To install node using nvm:
         nvm install node
              OR
