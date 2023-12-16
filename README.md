@@ -13,5 +13,5 @@
 
 <h5>Note : </h5>
 <p>
-Not a ready website , need to do many changes to the frontend.
+Not a ready website , need to do many changes.
 </p>
