@@ -9,16 +9,9 @@
   <li>Html,js</li>
 </ul>
 
-<h2>UI Features</h2>
-<ul>
-  <li>Vue.js with vite</li>
-  <li>tailwindcss</li>
-  <li>Flask with SQLalchemy</li>     
-  <li>Html,js</li>
-</ul>
- 
 
-<h2>Note</h2>
+
+<h3>Note : </h3>
 <p>
 Not a ready website , need to do many changes.
 </p>
